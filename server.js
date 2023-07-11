@@ -33,12 +33,12 @@ app.post('/start', (req, res) => {
       return res.status(500).json({ error: err.message });
     }
     game.id = this.lastID;
-    res.json({ name, role });
+    res.json({ name, role, gameId: game.id });
   });
 });
 
 app.post('/play', (req, res) => {
-  const { name, role, move } = req.body;
+  const { name, role, move, gameId } = req.body;
   if (game.players[role] !== name || game.turn !== role) {
     return res.status(400).json({ error: 'Not your turn' });
   }
@@ -48,11 +48,18 @@ app.post('/play', (req, res) => {
   const status = checkGameStatus(game.board);
   if (status !== 'continue') {
     game.status = 'complete';
-    return res.json({ status });
   }
-  game.board = makeRandomMove(game.board, game.turn);
-  game.turn = game.turn === 'X' ? 'O' : 'X';
-  res.json({ board: game.board });
+  db.run('UPDATE games SET board = ?, players = ?, turn = ?, last_move_date = ?, status = ? WHERE id = ?', [JSON.stringify(game.board), JSON.stringify(game.players), game.turn, game.last_move_date, game.status, gameId], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (game.status === 'complete') {
+      return res.json({ status });
+    }
+    game.board = makeRandomMove(game.board, game.turn);
+    game.turn = game.turn === 'X' ? 'O' : 'X';
+    res.json({ board: game.board });
+  });
 });
 
 app.get('/games', (req, res) => {
