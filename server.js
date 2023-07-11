@@ -4,7 +4,7 @@ app.use(express.json());
 const port = 3001;
 
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database(':memory:');
+let db = new sqlite3.Database('./games.db');
 
 db.run('CREATE TABLE games (id INTEGER PRIMARY KEY, board TEXT, players TEXT, turn TEXT)');
 
@@ -43,6 +43,16 @@ app.post('/play', (req, res) => {
   game.board = makeRandomMove(game.board, game.turn);
   game.turn = game.turn === 'X' ? 'O' : 'X';
   res.json({ board: game.board });
+});
+
+app.get('/games', (req, res) => {
+  db.all('SELECT * FROM games', [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
 });
 
 app.listen(port, () => {
