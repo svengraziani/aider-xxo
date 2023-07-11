@@ -6,7 +6,7 @@ const port = 3001;
 const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('./games.db');
 
-db.run('CREATE TABLE games (id INTEGER PRIMARY KEY, board TEXT, players TEXT, turn TEXT)');
+db.run('CREATE TABLE games (id INTEGER PRIMARY KEY, board TEXT, players TEXT, turn TEXT, start_date TEXT, last_move_date TEXT, status TEXT)');
 
 let game = {
   id: null,
@@ -26,6 +26,8 @@ app.post('/start', (req, res) => {
   const { name } = req.body;
   const role = Math.random() < 0.5 ? 'X' : 'O';
   game.players[role] = name;
+  game.start_date = new Date().toISOString();
+  game.status = 'in progress';
   res.json({ name, role });
 });
 
@@ -36,8 +38,10 @@ app.post('/play', (req, res) => {
   }
   game.board[move] = role;
   game.turn = role === 'X' ? 'O' : 'X';
+  game.last_move_date = new Date().toISOString();
   const status = checkGameStatus(game.board);
   if (status !== 'continue') {
+    game.status = 'complete';
     return res.json({ status });
   }
   game.board = makeRandomMove(game.board, game.turn);
