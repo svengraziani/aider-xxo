@@ -6,7 +6,7 @@ const port = 3001;
 const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('./games.db');
 
-db.run('CREATE TABLE games (id INTEGER PRIMARY KEY, board TEXT, players TEXT, turn TEXT, start_date TEXT, last_move_date TEXT, status TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, board TEXT, players TEXT, turn TEXT, start_date TEXT, last_move_date TEXT, status TEXT)');
 
 let game = {
   id: null,
