@@ -15,41 +15,8 @@ let game = {
   turn: 'X'
 };
 
-function checkGameStatus(board) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return 'win';
-    }
-  }
-  if (board.includes(null)) {
-    return 'continue';
-  } else {
-    return 'draw';
-  }
-}
-
-function makeRandomMove(board, role) {
-  let available = [];
-  for (let i = 0; i < board.length; i++) {
-    if (board[i] === null) {
-      available.push(i);
-    }
-  }
-  let move = available[Math.floor(Math.random() * available.length)];
-  board[move] = role;
-  return board;
-}
+const checkGameStatus = require('./checkGameStatus.js');
+const makeRandomMove = require('./makeRandomMove.js');
 
 app.get('/health', (req, res) => {
   res.send('Server is healthy');
