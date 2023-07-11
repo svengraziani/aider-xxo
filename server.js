@@ -28,7 +28,13 @@ app.post('/start', (req, res) => {
   game.players[role] = name;
   game.start_date = new Date().toISOString();
   game.status = 'in progress';
-  res.json({ name, role });
+  db.run('INSERT INTO games (board, players, turn, start_date, status) VALUES (?, ?, ?, ?, ?)', [JSON.stringify(game.board), JSON.stringify(game.players), game.turn, game.start_date, game.status], function(err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    game.id = this.lastID;
+    res.json({ name, role });
+  });
 });
 
 app.post('/play', (req, res) => {
