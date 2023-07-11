@@ -1,0 +1,70 @@
+
+# 2023-07-11 07:44:01.296603
++explain this repository
+
+# 2023-07-11 07:44:17.520168
++/add server.js
+
+# 2023-07-11 07:44:38.747985
++add an endpoint to start a new game, the game is of type of x and o, the user can start a game by providing his name. he gets randomly assigned on game start the x role or the o role. he has another endpoint where he can place his x or o. as a response he will obtain his placement plus the oponents move. if the game is ended the endpoint will return draw, win or loss
+
+# 2023-07-11 07:46:06.613731
++please implemente makeRandomMove and checkGameStatus, the game sessions should be stored in a sqlite db
+
+# 2023-07-11 07:47:29.726918
++/commit
+
+# 2023-07-11 07:47:37.531576
++/exit
+
+# 2023-07-11 07:47:55.780544
++/com
+
+# 2023-07-11 07:47:58.511697
++/commit
+
+# 2023-07-11 07:48:09.700393
++/help
+
+# 2023-07-11 07:49:40.767861
++/add server.js
+
+# 2023-07-11 07:50:07.167523
++please move checkGameStatus and makeRandomMove to their own files
+
+# 2023-07-11 07:53:25.062354
++/add server.js
+
+# 2023-07-11 09:45:10.497855
++/exit
+
+# 2023-07-11 09:45:36.966002
++/add server.js
+
+# 2023-07-11 09:45:59.369261
++add an endpoint that lists all games from the database, ensure the database is persiting to a local file 
+
+# 2023-07-11 09:47:51.345338
++please add some date information to games to see when the game was started and when the last move was done, also the complete or game in progress state should be tracked. also update the game logic to respect the new informations about the game
+
+# 2023-07-11 09:59:14.360265
++currently the table gets created everytime the server starts, can we add some check to prevent that an table already exsits arises, otherwise the app will crash on the second rund
+
+# 2023-07-11 10:00:05.422975
++currently the table gets created everytime the server starts, can we add some check to prevent that an table already exsits arises, otherwise the app will crash on the se
++cond rund     
+
+# 2023-07-11 10:00:47.231821
++the app start endpoint seems not to persist a game start to the database is this correct?
+
+# 2023-07-11 10:02:18.513394
++please update start and play endpoint so the the game state gets persisted, tracked and updated
+
+# 2023-07-11 10:05:49.771501
++/exit
+
+# 2023-07-11 10:10:28.656777
++/commit
+
+# 2023-07-11 10:10:34.447782
++/exit
