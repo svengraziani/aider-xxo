@@ -3,19 +3,52 @@ const app = express();
 app.use(express.json());
 const port = 3001;
 
+const sqlite3 = require('sqlite3').verbose();
+let db = new sqlite3.Database(':memory:');
+
+db.run('CREATE TABLE games (id INTEGER PRIMARY KEY, board TEXT, players TEXT, turn TEXT)');
+
 let game = {
+  id: null,
   board: Array(9).fill(null),
   players: {},
   turn: 'X'
 };
 
 function checkGameStatus(board) {
-  // Check rows, columns, and diagonals for a win
-  // Return 'win', 'draw', or 'continue'
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return 'win';
+    }
+  }
+  if (board.includes(null)) {
+    return 'continue';
+  } else {
+    return 'draw';
+  }
 }
 
 function makeRandomMove(board, role) {
-  // Make a random valid move and return the updated board
+  let available = [];
+  for (let i = 0; i < board.length; i++) {
+    if (board[i] === null) {
+      available.push(i);
+    }
+  }
+  let move = available[Math.floor(Math.random() * available.length)];
+  board[move] = role;
+  return board;
 }
 
 app.get('/health', (req, res) => {
